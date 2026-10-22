@@ -5,3 +5,8 @@ node_modules
 wrangler.jsonc
 .assetsignore
 .DS_Store
+notes
+templates
+build.mjs
+package.json
+package-lock.json

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}} · Ethan</title>
+  <meta name="description" content="{{DESCRIPTION}}" />
+  <meta name="theme-color" content="#f3eee2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a34a2e'/%3E%3Ctext x='32' y='45' font-size='36' text-anchor='middle' fill='%23f8f1e4' font-family='Songti SC, serif'%3E%E6%98%93%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../assets/style.css" />
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="site-nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../index.html">Ethan<span class="brand-dot">·</span><span class="brand-sub">易</span></a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a class="nav-back" href="../index.html#book-pages">← 书页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article-shell" id="main">
+    <article class="article">
+      <header class="article-head animate-up">
+        <div class="article-running-head">
+          <p class="article-motto">写下，才看见。</p>
+          <a class="article-category" href="../index.html?cat={{CATEGORY}}#book-pages">{{CATEGORY_LABEL}}</a>
+        </div>
+        <h1>{{TITLE}}</h1>
+        <p class="article-meta">
+          <span>{{DATE}}</span>
+          <span class="sep">·</span>
+          <span>约 {{READING}} 分钟</span>
+          <span class="sep">·</span>
+          <span>{{WORDS}} 字</span>
+        </p>
+      </header>
+
+      <div class="article-body">
+{{BODY}}
+      </div>
+
+      <nav class="article-pager" aria-label="文章导航">
+{{PAGER}}
+      </nav>
+
+      <div class="article-foot">
+        <a class="back-link" href="../index.html#book-pages">← 回到书页</a>
+        <nav class="article-links" aria-label="在别处">
+          <a href="https://x.com/Yi920224" target="_blank" rel="me noopener">X</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://weibo.com/u/2597761033" target="_blank" rel="me noopener">微博</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://github.com/ethan-0121/shuye" target="_blank" rel="me noopener">GitHub</a>
+        </nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Ethan</p>
+      <div class="footer-note">
+        <p>人是闲的 · 纸是暖的，字是慢的</p>
+        <p class="footer-mail">写信 · <a href="mailto:ethan19920121@gmail.com">ethan19920121@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/main.js" defer></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 title: 先写下来再说
-date: 2026-10-23
+date: 2026-10-20
 category: essay
 summary: 很多事不是想清楚了才开始，而是开始了才慢慢清楚。
 description: 很多事不是想清楚了才开始，而是开始了才慢慢清楚。

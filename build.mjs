@@ -81,6 +81,36 @@ function plainText(html) {
     .trim();
 }
 
+function formatBlockquotes(html) {
+  return html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, (block, inner) => {
+    if (/<footer[\s>]/i.test(inner)) return block;
+
+    const processed = inner.replace(/<p>([\s\S]*?)<\/p>/g, (_, paragraph) => {
+      const lines = paragraph.split("\n").map((line) => line.trim());
+      const last = lines[lines.length - 1] || "";
+      const isAttribution = /^——/.test(plainText(last));
+
+      if (isAttribution && lines.length === 1) {
+        return `<footer>${last}</footer>`;
+      }
+      if (isAttribution) {
+        lines.pop();
+      }
+
+      const body = lines
+        .filter((line) => line !== "")
+        .map((line) => (line.endsWith("<br />") ? line : `${line}<br />`))
+        .join("\n")
+        .replace(/<br \/>$/, "");
+
+      const footer = isAttribution ? `\n  <footer>${last}</footer>` : "";
+      return `<p>${body}</p>${footer}`;
+    });
+
+    return `<blockquote>${processed}</blockquote>`;
+  });
+}
+
 function countWords(html) {
   const text = plainText(html);
   const cjk = (text.match(/[\u3400-\u9fff]/g) || []).length;
@@ -375,7 +405,7 @@ async function main() {
     const title = String(data.title || stem).trim();
     const noteDir = path.dirname(file);
     const withImages = await rewriteImages(content, noteDir, attachments, warnings, label);
-    const bodyHtml = marked.parse(withImages).trim();
+    const bodyHtml = formatBlockquotes(marked.parse(withImages).trim());
     const lead = data.lead ? String(data.lead).trim() : "";
     const leadHtml = lead ? `        <p class="article-lead">${marked.parseInline(lead)}</p>\n` : "";
     const bodyForCount = `${leadHtml}${bodyHtml}`;

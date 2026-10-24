@@ -148,8 +148,12 @@
         setUrl();
         restoreShelfPosition(previousScroll);
       }
-      revealFirstCard();
       syncSticky();
+      revealFirstCard();
+      window.requestAnimationFrame(function () {
+        syncSticky();
+        revealFirstCard();
+      });
     };
 
     filters.forEach(function (button) {

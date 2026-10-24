@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +12,7 @@ const WRITING_DIR = path.join(ROOT, "writing");
 const ASSETS_NOTES_DIR = path.join(ROOT, "assets", "images", "notes");
 const TEMPLATE_PATH = path.join(ROOT, "templates", "article.html");
 const INDEX_PATH = path.join(ROOT, "index.html");
+const ABOUT_PATH = path.join(ROOT, "about.html");
 
 const ARTICLES_START = "<!-- ARTICLES:START -->";
 const ARTICLES_END = "<!-- ARTICLES:END -->";
@@ -45,6 +47,26 @@ function fill(template, values) {
   return template.replace(/\{\{([A-Z_]+)\}\}/g, (_, key) =>
     Object.hasOwn(values, key) ? values[key] : ""
   );
+}
+
+async function assetVersion() {
+  const hash = crypto.createHash("sha256");
+  for (const file of ["style.css", "main.js"]) {
+    hash.update(await fs.readFile(path.join(ROOT, "assets", file)));
+  }
+  return hash.digest("hex").slice(0, 8);
+}
+
+function stampAssets(html, version) {
+  return html
+    .replace(
+      /((?:\.\.\/)?assets\/style\.css)(?:\?v=[0-9a-f]+)?/g,
+      `$1?v=${version}`
+    )
+    .replace(
+      /((?:\.\.\/)?assets\/main\.js)(?:\?v=[0-9a-f]+)?/g,
+      `$1?v=${version}`
+    );
 }
 
 function normalizeDate(value) {
@@ -358,6 +380,7 @@ async function main() {
   await fs.mkdir(ASSETS_NOTES_DIR, { recursive: true });
 
   const template = await fs.readFile(TEMPLATE_PATH, "utf8");
+  const version = await assetVersion();
   const noteFiles = (await walk(NOTES_DIR, { skipDirs: new Set(["attachments"]) }))
     .filter((file) => file.endsWith(".md"))
     .sort();
@@ -450,17 +473,20 @@ async function main() {
 
   for (let index = 0; index < articles.length; index += 1) {
     const article = articles[index];
-    const html = fill(template, {
-      TITLE: escapeHtml(article.title),
-      DESCRIPTION: escapeHtml(article.description),
-      CATEGORY: article.category,
-      CATEGORY_LABEL: article.categoryLabel,
-      DATE: article.dateDisplay,
-      READING: String(article.reading),
-      WORDS: String(article.words),
-      BODY: `${article.leadHtml}${article.contentHtml}`,
-      PAGER: renderPager(index, articles)
-    });
+    const html = stampAssets(
+      fill(template, {
+        TITLE: escapeHtml(article.title),
+        DESCRIPTION: escapeHtml(article.description),
+        CATEGORY: article.category,
+        CATEGORY_LABEL: article.categoryLabel,
+        DATE: article.dateDisplay,
+        READING: String(article.reading),
+        WORDS: String(article.words),
+        BODY: `${article.leadHtml}${article.contentHtml}`,
+        PAGER: renderPager(index, articles)
+      }),
+      version
+    );
 
     await fs.writeFile(
       path.join(WRITING_DIR, `${article.slug}.html`),
@@ -489,7 +515,13 @@ async function main() {
   const cards = articles.map(renderCard).join("\n");
   const replacement = `${indent}${ARTICLES_START}\n${cards}\n${indent}${ARTICLES_END}`;
   const updatedIndex = indexHtml.replace(articleBlock, () => replacement);
-  await fs.writeFile(INDEX_PATH, updatedIndex, "utf8");
+  await fs.writeFile(INDEX_PATH, stampAssets(updatedIndex, version), "utf8");
+
+  const aboutHtml = await fs.readFile(ABOUT_PATH, "utf8");
+  const stampedAbout = stampAssets(aboutHtml, version);
+  if (stampedAbout !== aboutHtml) {
+    await fs.writeFile(ABOUT_PATH, stampedAbout, "utf8");
+  }
 
   for (const warning of warnings) {
     console.warn(`警告：${warning}`);

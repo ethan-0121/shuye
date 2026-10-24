@@ -115,6 +115,29 @@
       root.style.scrollBehavior = previousBehavior;
     };
 
+    var revealFirstCard = function () {
+      if (!head || !list || list.hidden) return;
+      var first = null;
+      for (var i = 0; i < entries.length; i += 1) {
+        if (!entries[i].hidden) {
+          first = entries[i];
+          break;
+        }
+      }
+      if (!first) return;
+
+      var gap = 18;
+      var headBottom = head.getBoundingClientRect().bottom;
+      var delta = first.getBoundingClientRect().top - (headBottom + gap);
+      if (delta >= 0) return;
+
+      var root = document.documentElement;
+      var previousBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      window.scrollTo(0, Math.max(0, window.scrollY + delta));
+      root.style.scrollBehavior = previousBehavior;
+    };
+
     var apply = function (value, updateUrl) {
       var previousScroll = window.scrollY;
       current = value;
@@ -125,6 +148,7 @@
         setUrl();
         restoreShelfPosition(previousScroll);
       }
+      revealFirstCard();
       syncSticky();
     };
 

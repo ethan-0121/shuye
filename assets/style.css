@@ -760,6 +760,12 @@ img {
   color: var(--muted);
 }
 
+.article-body hr {
+  margin: 3.2em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
 .article-body h2,
 .article-body h3 {
   margin: 2.4em 0 0.9em;

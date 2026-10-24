@@ -138,11 +138,43 @@
       root.style.scrollBehavior = previousBehavior;
     };
 
+    var stabilizeHeight = function () {
+      if (!list || list.hidden) return;
+      var root = document.documentElement;
+      var footer = document.querySelector(".site-footer");
+      var viewport = window.innerHeight;
+      var y = window.scrollY;
+      var previousBehavior = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+
+      list.style.minHeight = "";
+      var naturalList = list.offsetHeight;
+      var naturalDoc = root.scrollHeight;
+      var padding = Math.max(0, y + viewport - naturalDoc);
+      list.style.minHeight = naturalList + padding + "px";
+      list.getBoundingClientRect();
+
+      if (footer) {
+        var footerTop = window.scrollY + footer.getBoundingClientRect().top - y;
+        if (footerTop < viewport + 32) {
+          padding += viewport + 32 - footerTop;
+          list.style.minHeight = naturalList + padding + "px";
+          list.getBoundingClientRect();
+        }
+      }
+      window.scrollTo(0, y);
+      root.style.scrollBehavior = previousBehavior;
+    };
+
     var apply = function (value, updateUrl) {
       var previousScroll = window.scrollY;
+      var previousListHeight = list.offsetHeight;
       current = value;
       shown = pageSize;
       setActive();
+      if (updateUrl && !list.hidden && previousListHeight) {
+        list.style.minHeight = previousListHeight + "px";
+      }
       render();
       if (updateUrl) {
         setUrl();
@@ -150,6 +182,12 @@
       }
       syncSticky();
       revealFirstCard();
+      if (updateUrl) {
+        stabilizeHeight();
+        syncSticky();
+        revealFirstCard();
+      }
+      syncSticky();
       window.requestAnimationFrame(function () {
         syncSticky();
         revealFirstCard();

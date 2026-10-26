@@ -7,7 +7,7 @@
   <meta name="description" content="关于 Ethan，以及这个网站。" />
   <meta name="theme-color" content="#f3eee2" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a34a2e'/%3E%3Ctext x='32' y='45' font-size='36' text-anchor='middle' fill='%23f8f1e4' font-family='Songti SC, serif'%3E%E6%98%93%3C/text%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="assets/style.css?v=58a1a060" />
+  <link rel="stylesheet" href="assets/style.css?v=6211f205" />
   <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -35,29 +35,50 @@
       </header>
 
       <div class="article-body">
-        <p class="article-lead">我不太会介绍自己，<br />所以这个站替我慢慢说。</p>
+        <section class="about-section">
+          <p class="about-label">我是谁</p>
+          <p>我叫 Ethan，名字里留一个「易」字。不是作家，也不是程序员。写得慢，写得少，写的都是真的。</p>
+          <p>有事说事：<a href="mailto:wosqinyi@qq.com">wosqinyi@qq.com</a></p>
+        </section>
 
-        <p>我在做一些东西：一个还在长的手上项目，一些关于怎么把话说明白的练习，还有不少没头没尾的笔记。它们大多还不成形，但都是真的。</p>
+        <section class="about-section">
+          <p class="about-label">写什么</p>
+          <p>这个站只写三种东西：</p>
+          <ul class="about-list">
+            <li><span class="about-cat">随笔</span> —— 想不清楚的事，落到纸上会清楚一点。</li>
+            <li><span class="about-cat">观察</span> —— 看见的变化，值得记下来等它自己说话。</li>
+            <li><span class="about-cat">实践</span> —— 拿不准的事，做一遍，才知道行不行。</li>
+          </ul>
+          <p>一件事写完一篇，不拆连载。</p>
+          <p>只想看一篇的话，从<a href="writing/ai-graduation-unemployment.html">《AI 时代的「毕业即失业」》</a>开始。</p>
+        </section>
 
-        <p>这个网站没有别的用途。它是一张摊开的桌子——做了一半的东西先放在这儿，想明白了再挪走。你路过，随便看看就好。</p>
+        <p class="about-manifesto">我建这个站，是因为在别人的平台上写字，总觉得东西不是自己的。</p>
 
-        <p>如果你想聊点什么，或者只是路过，都欢迎。</p>
+        <section class="about-section">
+          <p class="about-label">怎么做的</p>
+          <p>没有后台，没有评论，没有统计。文章在 Obsidian 里写，GitHub 存代码，Cloudflare 自动构建发布。</p>
+          <p>从零到上架的过程写成了一篇教程，<a href="writing/从零上线个人静态网站.html">在这里 →</a></p>
+        </section>
 
-        <div class="contact-block">
-          <div class="contact-qr">
-            <img src="assets/images/wechat-official-account.jpg" alt="公众号二维码" width="430" height="430" loading="lazy" />
+        <section class="about-section">
+          <p class="about-label">找到我</p>
+          <div class="contact-block">
+            <div class="contact-qr">
+              <img src="assets/images/wechat-official-account.jpg" alt="公众号二维码" width="430" height="430" loading="lazy" />
+            </div>
+            <p class="contact-links">
+              <a href="https://x.com/Yi920224" target="_blank" rel="me noopener">X</a>
+              <span class="sep" aria-hidden="true">·</span>
+              <a href="https://weibo.com/u/2597761033" target="_blank" rel="me noopener">微博</a>
+              <span class="sep" aria-hidden="true">·</span>
+              <a href="https://www.zhihu.com/people/qyyyyyzhu" target="_blank" rel="me noopener">知乎</a>
+              <span class="sep" aria-hidden="true">·</span>
+              <a href="https://github.com/ethan-0121/shuye" target="_blank" rel="me noopener">GitHub</a>
+            </p>
+            <p class="contact-note">更新节奏：不定期。写完一篇发一篇，不追热点，也不攒着。</p>
           </div>
-          <p class="contact-links">
-            <a href="https://x.com/Yi920224" target="_blank" rel="me noopener">X</a>
-            <span class="sep" aria-hidden="true">·</span>
-            <a href="https://weibo.com/u/2597761033" target="_blank" rel="me noopener">微博</a>
-            <span class="sep" aria-hidden="true">·</span>
-            <a href="https://github.com/ethan-0121/shuye" target="_blank" rel="me noopener">GitHub</a>
-          </p>
-          <p class="contact-mail"><a href="mailto:ethan19920121@gmail.com">ethan19920121@gmail.com</a></p>
-        </div>
-
-        <p class="signature">—— Ethan</p>
+        </section>
       </div>
 
       <div class="article-foot">
@@ -71,11 +92,11 @@
       <p>© 2026 Ethan</p>
       <div class="footer-note">
         <p>人是闲的 · 纸是暖的，字是慢的</p>
-        <p class="footer-mail">写信 · <a href="mailto:ethan19920121@gmail.com">ethan19920121@gmail.com</a></p>
+        <p class="footer-mail">写信 · <a href="mailto:wosqinyi@qq.com">wosqinyi@qq.com</a></p>
       </div>
     </div>
   </footer>
 
-  <script src="assets/main.js?v=58a1a060" defer></script>
+  <script src="assets/main.js?v=6211f205" defer></script>
 </body>
 </html>

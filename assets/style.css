@@ -1039,6 +1039,113 @@ img {
 }
 
 /* ==========================================================
+   临近篇章
+   ========================================================== */
+
+.article-related {
+  max-width: 20rem;
+  margin-top: 3.4rem;
+}
+
+.related-head {
+  margin-bottom: 0.9rem;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.related-head .sep {
+  margin-inline: 0.5em;
+}
+
+.related-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related-list li + li {
+  margin-top: 0.35rem;
+}
+
+.related-list a {
+  display: block;
+  font-size: 0.94rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 0.3s var(--ease);
+}
+
+.related-list a:hover {
+  color: var(--accent);
+}
+
+.article-related + .article-pager {
+  margin-top: 2.6rem;
+}
+
+/* ==========================================================
+   关于页
+   ========================================================== */
+
+.about-section + .about-section {
+  margin-top: 2.9rem;
+}
+
+.article-body .about-label {
+  margin-bottom: 1rem;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.about-list {
+  margin: 0 0 1.7em;
+  padding: 0;
+  list-style: none;
+}
+
+.article-body .about-list li {
+  margin-bottom: 0.5em;
+  font-size: 1.05rem;
+  line-height: 1.95;
+  color: var(--ink-soft);
+}
+
+.article-body .about-list li:last-child {
+  margin-bottom: 0;
+}
+
+.about-cat {
+  color: var(--accent);
+}
+
+.article-body .about-manifesto {
+  margin: 3.4rem 0;
+  padding: 0.3rem 0 0.3rem 1.2rem;
+  border-left: 2px solid rgba(163, 74, 46, 0.45);
+  font-size: 1.1rem;
+  line-height: 2.05;
+  color: var(--ink);
+}
+
+.article-body .contact-note {
+  margin: 0.55rem 0 0;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.about-section .contact-block {
+  margin: 1.2rem auto 0;
+}
+
+/* ==========================================================
    响应式
    ========================================================== */
 

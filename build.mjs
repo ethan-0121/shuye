@@ -346,6 +346,52 @@ function renderPager(index, articles) {
   return `${left}\n${right}`;
 }
 
+function renderRelated(index, articles) {
+  const current = articles[index];
+  const siblings = articles.filter(
+    (article, position) =>
+      position !== index && article.category === current.category
+  );
+
+  if (siblings.length < 3) return "";
+
+  const anchor = Date.parse(`${current.date}T00:00:00Z`);
+  const picked = siblings
+    .map((article) => ({
+      article,
+      distance: Math.abs(Date.parse(`${article.date}T00:00:00Z`) - anchor)
+    }))
+    .sort(
+      (a, b) =>
+        a.distance - b.distance ||
+        b.article.date.localeCompare(a.article.date) ||
+        a.article.slug.localeCompare(b.article.slug)
+    )
+    .slice(0, 3)
+    .sort(
+      (a, b) =>
+        b.article.date.localeCompare(a.article.date) ||
+        a.article.slug.localeCompare(b.article.slug)
+    );
+
+  const items = picked
+    .map(
+      ({ article }) => `          <li>
+            <a href="${encodeURIComponent(article.slug)}.html">${escapeHtml(article.title)}</a>
+          </li>`
+    )
+    .join("\n");
+
+  return `      <nav class="article-related" aria-label="${current.categoryLabel} · 临近篇章">
+        <p class="related-head">${current.categoryLabel}<span class="sep">·</span>临近篇章</p>
+        <ul class="related-list">
+${items}
+        </ul>
+      </nav>
+
+`;
+}
+
 function renderCard(article) {
   const cover = article.cover
     ? `\n            <span class="shelf-cover"><img src="${escapeHtml(article.cover)}" alt="${escapeHtml(article.coverAlt)}" loading="lazy" /></span>`
@@ -483,6 +529,7 @@ async function main() {
         READING: String(article.reading),
         WORDS: String(article.words),
         BODY: `${article.leadHtml}${article.contentHtml}`,
+        RELATED: renderRelated(index, articles),
         PAGER: renderPager(index, articles)
       }),
       version

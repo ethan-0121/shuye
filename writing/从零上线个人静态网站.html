@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>从零上线个人静态小站｜本地文件到公开网址完整鼠标操作教程 · Ethan</title>
+  <meta name="description" content="如果你也想拥有一个属于自己的静态网页，不管是用来展示作品，还是单纯写字记录，都可以看看我的这套方法。" />
+  <meta name="theme-color" content="#f3eee2" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23a34a2e'/%3E%3Ctext x='32' y='45' font-size='36' text-anchor='middle' fill='%23f8f1e4' font-family='Songti SC, serif'%3E%E6%98%93%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../assets/style.css?v=58a1a060" />
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="site-nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="../index.html">Ethan<span class="brand-dot">·</span><span class="brand-sub">易</span></a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a class="nav-back" href="../index.html#book-pages">← 书页</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap article-shell" id="main">
+    <article class="article">
+      <header class="article-head animate-up">
+        <div class="article-running-head">
+          <p class="article-motto">写下，才看见。</p>
+          <a class="article-category" href="../index.html?cat=practice#book-pages">实践</a>
+        </div>
+        <h1>从零上线个人静态小站｜本地文件到公开网址完整鼠标操作教程</h1>
+        <p class="article-meta">
+          <span>2026.10.23</span>
+          <span class="sep">·</span>
+          <span>约 9 分钟</span>
+          <span class="sep">·</span>
+          <span>3690 字</span>
+        </p>
+      </header>
+
+      <div class="article-body">
+<p class="article-lead">如果你也想拥有一个属于自己的静态网页，不管是用来展示作品，还是单纯写字记录，都可以看看我的这套方法。不懂代码也能跟着做，不花一分钱，全部用免费工具就能搭好。</p>
+<h2>准备条件与核心链路</h2>
+<p>本教程的完整运行链路如下： <strong>本地 Obsidian 写 Markdown 源码 → GitHub Desktop 自动同步 → GitHub 远程仓库存储 → Cloudflare 自动拉取代码并执行命令编译为 HTML 网页对外发布。</strong></p>
+<ul>
+<li><strong>Obsidian</strong>：本地纯文本写作软件，用于编写并管理原始 <code>.md</code> 文章文件。</li>
+<li><strong>GitHub Desktop</strong>：图形化 Git 同步客户端，用于把本地文件夹的改动一键提交并推送到 GitHub 远程仓库，免去网页端反复手动上传文件的麻烦。</li>
+<li><strong>Cloudflare (Workers &amp; Pages)</strong>：云端平台，负责拉取仓库源码、运行云端构建指令将 Markdown 渲染为标准 HTML 网页，并提供全球高速访问与 HTTPS 访问域名。</li>
+</ul>
+<blockquote>
+<p><strong>重要原则</strong>：GitHub 线上仓库、GitHub Desktop 管理的本地目录、Obsidian 笔记库，<strong>三者必须指向电脑上的同一个本地文件夹</strong>，避免相对路径错乱导致图片丢失或链接失效。</p>
+</blockquote>
+<hr>
+<h2>第一部分：GitHub 准备工作</h2>
+<h3>注册并登录 GitHub</h3>
+<ol>
+<li>打开 <code>github.com</code>，点击右上角 <strong>Sign up</strong> 注册账号。</li>
+<li>按照提示输入邮箱、密码及用户名，进入邮箱查收验证码完成验证。</li>
+</ol>
+<p>创建用于存放源文件的空仓库</p>
+<ol>
+<li>登录后点击页面右上角头像旁的 <strong>「+」</strong>，选择 <strong>New repository</strong>。</li>
+<li><strong>Repository name</strong>：填写英文仓库名称。</li>
+<li><strong>可见性</strong>：勾选 <strong>Public</strong>（公开仓库）。</li>
+<li><strong>初始化选项</strong>：⚠️ <strong>不要勾选</strong> Add a README file、不要添加 <code>.gitignore</code> 或 License，保持为一个完全空白的仓库。</li>
+<li>点击下方绿色的 <strong>Create repository</strong> 创建完成。<img src="../assets/images/notes/9cd20c3c5d25bb7e583765c66eec4a22.jpg" alt="9cd20c3c5d25bb7e583765c66eec4a22" loading="lazy" /></li>
+</ol>
+<hr>
+<h2>第二部分：安装并配置 GitHub Desktop</h2>
+<p>通过桌面客户端实现本地文件向 GitHub 的自动同步。</p>
+<ol>
+<li>访问 <code>desktop.github.com</code> 下载并安装适用于你系统的 GitHub Desktop。</li>
+<li>打开软件，进入菜单的 <code>Settings</code>（或 <code>Preferences</code>）登录你的 GitHub 账号。</li>
+<li>导入本地笔记库：<ul>
+<li>顶部菜单依次点击：<code>File</code> → <code>Add Local Repository</code>。</li>
+<li>选择你电脑上存放 Obsidian 文章的文件夹。</li>
+<li>软件若提示 <em>“This directory does not appear to be a Git repository”</em>，直接点击下方的 <strong>create a repository</strong> 完成本地 Git 初始化。</li>
+</ul>
+</li>
+<li>提交初始版本：<ul>
+<li>在左下角的 Summary 输入框填入备注（例如：<code>初始化博客文章</code>）。</li>
+<li>点击 <strong>Commit to main</strong>。</li>
+</ul>
+</li>
+<li>发布到线上：<ul>
+<li>点击顶部工具栏的 <strong>Publish repository</strong> 按钮。</li>
+<li>选中第一步在网页端建好的同名仓库，点击确认发布。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>配置完成后，后续在本地修改或新增任何文章，只需在 GitHub Desktop 点击 <strong>Commit</strong> 和 <strong>Push origin</strong>，改动便会自动同步到 GitHub 仓库。</p>
+</blockquote>
+<img src="../assets/images/notes/7921b510cda9a468376a558a727d398a.jpg" alt="7921b510cda9a468376a558a727d398a" loading="lazy" /><hr>
+<h2>第三部分：Obsidian 本地配置与写作规范</h2>
+<ol>
+<li>访问 <code>obsidian.md</code>，下载并安装 Obsidian。</li>
+<li>打开 Obsidian，选择 <strong>“打开本地已存在的库”</strong>，路径直接选择第二步中由 GitHub Desktop 托管的本地文件夹。</li>
+</ol>
+<blockquote>
+<p>💡 <strong>【操作前先看：路径致命规则】</strong> <strong>Obsidian 的整个笔记库，必须就是你电脑上被 GitHub Desktop 托管的那个本地仓库文件夹！</strong> 切勿在电脑的其他地方单独建文件夹写文章，否则 GitHub Desktop 根本监测不到你的改动，也无法推送到线上。</p>
+</blockquote>
+<h3>核心避坑：Markdown 语法设置</h3>
+<p>为了保证本地写的排版能在网页上正常显示，进入写作前必须完成以下两步配置：</p>
+<ol>
+<li><strong>强制使用标准 Markdown 链接</strong>： 打开 Obsidian <code>设置</code> → <code>文件与链接</code> → 找到 <strong>“使用 [[维基链接]]（Use [[Wikilinks]]）”</strong>，<strong>务必将其关闭</strong>。这样插入链接和图片时，会自动生成类似 <code>[文章](链接.md)</code> 和 <code>![图片描述](路径/图片.png)</code> 的通用格式，避免云端编译器无法解析。</li>
+<li><strong>规范图片附件存放路径</strong>： 在同个设置页面中，将 <strong>“附件默认存放路径”</strong> 设置为 <strong>“指定文件夹下的子文件夹”</strong>（如统一放在 <code>images/</code> 或 <code>assets/</code> 下）。切勿让图片散落在根目录，确保相对路径清晰稳定。</li>
+</ol>
+<h3>懒人专属：让 AI 帮你在 Obsidian 里一键建好博客工作流</h3>
+<p>复制下方内容发给 AI 时，<strong>务必把【】里的内容替换为你电脑上的真实路径</strong>（查看方法：在 GitHub Desktop 顶部点击 <code>Repository</code> → <code>Show in Finder</code> 或 <code>Show in Explorer</code>，即可看到你的真实路径）：</p>
+<p>💬 <strong>【提示词↓↓↓】</strong></p>
+<blockquote>
+<p>我正在用 Obsidian 搭建个人静态博客的写作库，所有的文章后续通过 GitHub Desktop 自动同步并上线。</p>
+<p>【关键前提】：我的 GitHub 本地仓库文件夹路径是：【在此处粘贴你的本地文件夹完整绝对路径】。我的 Obsidian 笔记库已经打开了这个文件夹。</p>
+<p>请基于我上述的实际根目录路径，教我一步步配置博客的写作规范：</p>
+<ol>
+<li>目录结构：告诉我应该在当前这个文件夹里新建哪些子文件夹（请规划出「草稿箱（未发布）」、「正文（已发布）」、「静态图片资源」等清晰规范的目录层级，确保不破坏根目录结构）；</li>
+<li>文章模板：生成一份通用的标准 Markdown 博客正文模板（必须包含 Frontmatter/YAML 元数据，如 title、date、category、summary、slug 等必要字段）；</li>
+<li>落地步骤：用鼠标流的操作步骤，手把手教我怎么把这套结构直接在 Obsidian 界面里落地建好，并设置好新文章一键调用该模板。</li>
+</ol>
+</blockquote>
+<hr>
+<h2>第四部分：配置 Cloudflare，让网站自动生成</h2>
+<p>目前你写的个人小站文件只存在自己的电脑里，也只能在本地打开，别人看不到，换一台设备也打不开。配置 Cloudflare 的目的，就是把这些文件放到网络上，让它变成一个真正的网址，这样手机、电脑，不管在哪里、用什么设备，只要有网络都能打开。</p>
+<h3>让 AI 准备辅助文件（先做这一步）</h3>
+<p>只有文章是不够的，仓库里还需要几个“辅助文件”，用来告诉 Cloudflare 怎么把文章变成网页。<strong>你不需要看懂它们</strong>：复制下面的提示词发给 AI，照着 AI 的说明把文件放进你的本地文件夹，再用 GitHub Desktop 提交并 <strong>Push origin</strong> 就行。</p>
+<p><strong>复制后，把【】里的内容替换成你自己的</strong></p>
+<p> <strong>【提示词↓↓↓】</strong></p>
+<blockquote>
+<p>我是编程小白，正在搭建个人静态博客。</p>
+<ul>
+<li>我的文章是 Markdown 格式，存放在本地文件夹，路径是：【粘贴你的本地文件夹完整路径】，文件夹已经通过 GitHub Desktop 关联到 GitHub 仓库；</li>
+<li>部署平台是 Cloudflare Workers，连接 GitHub 仓库自动构建；</li>
+<li>我会在 Cloudflare 里填写的构建命令是：npm ci &amp;&amp; npm run build</li>
+<li>部署命令是：npx wrangler deploy</li>
+<li>我想使用的项目名称是：【想一个英文名称，例如全小写加短横线】</li>
+</ul>
+<p>请帮我生成仓库需要的全部辅助文件，要求：</p>
+<ol>
+<li>能把我的 Markdown 文章转换成网页，并且上面两条命令可以直接运行；</li>
+<li>配置里的项目名称与我填写的一致；</li>
+<li>包含 .gitignore，避免把不必要的大文件推送到 GitHub；</li>
+<li>用最简单的话，一步步告诉我：每个文件放在哪里、电脑上需要先安装什么软件（如果需要）、需要在哪里输入哪些命令、怎么用 GitHub Desktop 推送；</li>
+<li>我不懂命令行，请不要省略任何步骤。</li>
+</ol>
+</blockquote>
+<h3>在 Cloudflare 创建项目并绑定仓库</h3>
+<ol>
+<li>在 Cloudflare 控制台左侧导航栏点击 <strong>Workers &amp; Pages</strong>。</li>
+<li>点击页面右上角的蓝色按钮 <strong>Create application</strong>。<img src="../assets/images/notes/3c4f2eda860c46dca7b54cb8900ddfe6.jpg" alt="3c4f2eda860c46dca7b54cb8900ddfe6" loading="lazy" /></li>
+<li>点击 <strong>Import an existing Git repository</strong> 旁边 <strong>Get started</strong>。</li>
+<li>选择你的 GitHub 账号（第一次需要点击授权）。</li>
+<li>在仓库列表中选中你的博客仓库。</li>
+<li>项目名称填写<strong>同一个名称</strong>，两边必须一致。</li>
+<li>点击 <strong>Save and Deploy</strong>。</li>
+</ol>
+<h3>填写两行固定命令</h3>
+<p>进入项目的 <strong>Settings</strong>（设置），找到 <strong>Build（构建）</strong> 相关设置，把下面两行分别复制进去，然后保存。这两行不需要理解，原样粘贴即可：</p>
+<p><strong>Build command</strong>（构建命令）：</p>
+<pre><code>npm ci &amp;&amp; npm run build
+</code></pre>
+<p><strong>Deploy command</strong>（部署命令）：</p>
+<pre><code>npx wrangler deploy
+</code></pre>
+<blockquote>
+<p>如果 Deploy command 里已经是 <code>npx wrangler deploy</code>，不用改。<br />
+<img src="../assets/images/notes/b03d4ba6f2af34f2995ce59202061383.jpg" alt="b03d4ba6f2af34f2995ce59202061383" loading="lazy" /><img src="../assets/images/notes/be247127075b96db636f95893cfeb339%201.jpg" alt="be247127075b96db636f95893cfeb339 1" loading="lazy" /></p>
+</blockquote>
+<hr>
+<h2>第五部分：触发构建与上线访问</h2>
+<ol>
+<li><strong>触发部署</strong>：<ul>
+<li>在本地 Obsidian 修改保存任意文件，打开 GitHub Desktop 提交并点击 <strong>Push origin</strong>，Cloudflare 监测到 <code>main</code> 分支变动后会自动拉取代码并执行构建。</li>
+<li>构建状态和日志可以在项目 <strong>Deployments</strong> 标签页底部的 <strong>View build history</strong> 中查看；构建失败时，修复问题后可以在这里重试。</li>
+</ul>
+</li>
+<li><strong>查看网站</strong>：<ul>
+<li>构建成功后，通过 Cloudflare 自动分配的 <code>workers.dev</code> 子域名访问你的网站，地址可以在项目概览页找到。</li>
+<li>此时在浏览器中看到的已是编译渲染完成的正式博客网站。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>让 AI 帮你生成一篇测试稿，自己动手完成流程，等待 1 分钟左右，打开网站查看是否构建成功，如遇构建失败情况，可让 AI 帮你排查原因。</p>
+</blockquote>
+<hr>
+<p>以上设置都是一次性的，以后想更新网站，只需要重复下面步骤</p>
+<ol>
+<li>打开 Obsidian 添加新标签页、读取模板、编写或修改 <code>.md</code> 文章，保存文件。</li>
+<li>打开 GitHub Desktop，左侧会直观列出变动的文件，填写提交说明后点击 <strong>Commit to main</strong>，再点击 <strong>Push origin</strong>。</li>
+<li>Cloudflare 自动捕获更新，云端自动执行构建转换，数十秒后访问网站即可看到最新内容。</li>
+</ol>
+<hr>
+<p><strong>恭喜你，到这里，你的个人小站就已经成功上线了。你可以把 Cloudflare 分配给你的网址分享给所有人，任何人都可以通过这个网址打开你的个人网站。</strong></p>
+<p><strong>如果你觉得这个网址不够好看、不好记，想换成自己的专属域名，我们就接着往下看。</strong></p>
+<hr>
+<h2>第六部分：绑定自己的专属域名</h2>
+<h4>购买域名</h4>
+<p>域名有三种买法，选一种就行：</p>
+<ol>
+<li><strong>在 Cloudflare 里买</strong>：在控制台左侧点击 <strong>Domains</strong> → <strong>Registrations</strong>，搜索并购买，<strong>不需要实名认证</strong>，买完就能用。买完域名就已经在 Cloudflare 里了。<img src="../assets/images/notes/Pasted%20image%2020261026134612.png" alt="Pasted image 20261026134612" loading="lazy" /></li>
+<li><strong>阿里云、腾讯云</strong>：购买后<strong>必须先完成实名认证</strong>，域名才能使用。</li>
+</ol>
+<blockquote>
+<p>在阿里云、腾讯云买完域名后，请先到域名管理页面按提示完成实名认证，再做后面的步骤，实名认证大概需要几个小时。</p>
+</blockquote>
+<h4>把域名交给 Cloudflare 管理（在阿里云、腾讯云买的才需要）</h4>
+<ol>
+<li><p>在控制台左侧点击 <strong>Domains</strong> → <strong>Overview</strong>，再点击右上角的蓝色按钮 <strong>Add domain</strong>。<img src="../assets/images/notes/Pasted%20image%2020261026134240.png" alt="Pasted image 20261026134240" loading="lazy" /></p>
+</li>
+<li><p>选 <strong>Connect a domain</strong> 输入你买的域名，选择免费计划。</p>
+</li>
+<li><p>Cloudflare 会给你两条 <strong>NS 地址</strong>。可以把它理解成告诉域名“以后归 Cloudflare 管”。
+<img src="../assets/images/notes/Pasted%20image%2020261026134004.png" alt="Pasted image 20261026134004" loading="lazy" /><img src="../assets/images/notes/b6354b4093a6576787870731ee2f0750.png" alt="b6354b4093a6576787870731ee2f0750" loading="lazy" /></p>
+</li>
+<li><p>回到阿里云或腾讯云的域名管理页面，把域名默认的 DNS 服务器，改成这两条 NS 地址。（阿里云如下）<img src="../assets/images/notes/7d74f6cfadd966cfffd2d0a8106c99f4.jpg" alt="7d74f6cfadd966cfffd2d0a8106c99f4" loading="lazy" /></p>
+</li>
+<li><p>等待生效，快则几分钟，慢则几个小时。回到 Domains 的 Overview 页，域名的 Status 显示 <strong>Active</strong>，就说明成功了。<img src="../assets/images/notes/Pasted%20image%2020261026135847.png" alt="Pasted image 20261026135847" loading="lazy" /></p>
+</li>
+</ol>
+<h4>让 Worker 认领这个域名</h4>
+<ol>
+<li>在 Cloudflare 控制台左侧点击 <strong>Workers &amp; Pages</strong>，再点击你的项目名称，进入项目主页。</li>
+<li>在主页找到 <strong>Domains</strong> 这一块，点击 <strong>Custom Domains and Routes</strong> 右边的“<strong>+ Add Domain</strong>”。</li>
+<li>按提示输入你的域名并点选确认，<strong>Subdomain</strong> 不用填写，点击右下角的蓝色按钮 <strong>Add Domain</strong> 。<img src="../assets/images/notes/b03d4ba6f2af34f2995ce59202061383%201.jpg" alt="b03d4ba6f2af34f2995ce59202061383 1" loading="lazy" /><img src="../assets/images/notes/Pasted%20image%2020261026142226.png" alt="Pasted image 20261026142226" loading="lazy" /></li>
+</ol>
+<p>Cloudflare 会自动帮你设置解析和 HTTPS 证书，不需要你再操作。完成后，用这个域名就能打开你的网站了。
+等待几分钟后，可以用自己的域名打开网页，如果打开网站报风险，没关系，点击确认，能进网页就表示解析完成了，至于风险那是这两个证书还在签发，等证书签发好，也就没问题了。
+<img src="../assets/images/notes/Pasted%20image%2020261026141514.png" alt="Pasted image 20261026141514" loading="lazy" />
+<img src="../assets/images/notes/Pasted%20image%2020261026141644.png" alt="Pasted image 20261026141644" loading="lazy" /></p>
+<p><strong>❗❗❗谨记❗❗❗</strong></p>
+<blockquote>
+<p>带 <code>www</code> 和不带 <code>www</code> 是两个不同的地址，你买的是什么，绑定的是什么，就用什么网址打开，不要自作主张的增加或减少。<br />
+你可以先做个实验：用 <code>www</code> + 自己的域名，看能否打开。<br />
+打不开没关系，下面我会说该如何增加 <code>www</code> 跳转规则。</p>
+</blockquote>
+<hr>
+<h3>收尾：绑定域名之后，还要检查三件事</h3>
+<p>域名绑定成功后，下面三件事能让你的网站更安全、更好用。这三件事都在域名的设置里完成：在 Cloudflare 控制台左侧点击 <strong>Domains</strong> → <strong>Overview</strong>，再点击你的域名进入设置页。</p>
+<h4>1. 检查 SSL 是不是 Full</h4>
+<ol>
+<li>在左侧菜单点击 <strong>Domains</strong> → <strong>Overview</strong> → <strong>域名后的“···”</strong> → <strong>Configure SSL/TLS</strong></li>
+<li>看页面上显示的当前加密模式，确认是 <strong>Full</strong>（或 <strong>Full (strict)</strong>）。</li>
+<li>如果显示的是别的，点击修改，把它改成 Full。<img src="../assets/images/notes/Pasted%20image%2020261026145450.png" alt="Pasted image 20261026145450" loading="lazy" /></li>
+</ol>
+<h4>2. 打开 HTTPS</h4>
+<ol>
+<li>在左侧菜单点击 <strong>SSL/TLS</strong> → <strong>Edge Certificates</strong>。</li>
+<li>找到 <strong>Always Use HTTPS</strong>、<strong>Automatic HTTPS Rewrites</strong> 把它们打开。</li>
+</ol>
+<p>打开 <strong>Always Use HTTPS</strong>，有人用 <code>http://</code> 开头的地址访问你的网站，会自动跳转到更安全的 <code>https://</code>。
+<img src="../assets/images/notes/Pasted%20image%2020261026150232.png" alt="Pasted image 20261026150232" loading="lazy" /></p>
+<p>小站里如果有 <code>http://</code> 开头的链接，浏览器可能会拦截它们。打开 <strong>Automatic HTTPS Rewrites</strong> ，Cloudflare 会自动帮你改成 <code>https://</code>。
+<img src="../assets/images/notes/Pasted%20image%2020261026151001.png" alt="Pasted image 20261026151001" loading="lazy" /></p>
+<h4>3. 增加 www 跳转</h4>
+<p>前面提醒过，带 www 和不带 www 是两个不同的地址，只绑定一个，另一个就打不开。这一步让访客输入带 www 的地址时，也能自动跳到你绑定的那个地址。这里以你绑定的是不带 www 的地址为例。</p>
+<p><strong>添加 www 的记录</strong></p>
+<ol>
+<li>在左侧菜单点击 <strong>DNS</strong> → <strong>Records</strong>，点击 <strong>Add record</strong>。</li>
+<li><strong>Type</strong> 选 <strong>CNAME</strong>，<strong>Name</strong> 填 <code>www</code>。</li>
+<li><strong>Target</strong> 填你自己购买的域名。</li>
+<li>确认 <strong>Proxy status</strong> 是 <strong>Proxied</strong>（橙色云朵亮着），点击 <strong>Save</strong>。<img src="../assets/images/notes/Pasted%20image%2020261026152646.png" alt="Pasted image 20261026152646" loading="lazy" /></li>
+</ol>
+<p><strong>创建跳转规则</strong></p>
+<ol>
+<li>在左侧菜单点击 <strong>Rules</strong> → <strong>Redirect Rules</strong>，点击 <strong>Create rule</strong>。</li>
+<li>在模板里选择 <strong>Redirect from WWW to Root</strong>。</li>
+<li>核对（或填写）下面这几项，模板一般会自动填好：<ul>
+<li><strong>If incoming requests match</strong>： <strong>Wildcard pattern</strong></li>
+<li><strong>Request URL</strong>：<code>https://www.*</code></li>
+<li><strong>Target URL</strong>：<code>https://${1}</code></li>
+<li><strong>Status code</strong>：<code>301</code></li>
+<li><strong>Preserve query string</strong>：打开</li>
+</ul>
+</li>
+<li>点击 <strong>Deploy</strong>。。<img src="../assets/images/notes/Pasted%20image%2020261026152850.png" alt="Pasted image 20261026152850" loading="lazy" />
+<img src="../assets/images/notes/Pasted%20image%2020261026153710.png" alt="Pasted image 20261026153710" loading="lazy" /></li>
+</ol>
+<p>部署规则时，如果弹出对话框内容，不用担心。只要你已经保存了第一步的 CNAME 记录，直接选 <strong>Ignore and deploy rule anyway</strong>，再点 <strong>Deploy rule</strong> 就行。
+<img src="../assets/images/notes/Pasted%20image%2020261026154301.png" alt="Pasted image 20261026154301" loading="lazy" /></p>
+<p><strong>验证：</strong> 用 <code>www</code> 开头的地址，如果地址自动变成不带<code>www</code> ，就说明跳转成功了。</p>
+<hr>
+<p>好了，现在所有的设置都已经完成。那么，你打算用这个网站来做什么呢？</p>
+<blockquote>
+<p>一份在线简历？<br />
+一部作品集？<br />
+一个收藏夹？<br />
+一本公开的日记？<br />
+还是别的什么呢？</p>
+</blockquote>
+        <p class="signature">—— Ethan</p>
+      </div>
+
+      <nav class="article-pager" aria-label="文章导航">
+        <span class="pager-placeholder">
+          <span class="pager-label">首篇</span>
+          <span class="pager-title">已是最新一篇</span>
+        </span>
+        <a class="pager-link pager-next" href="ai-graduation-unemployment.html">
+          <span class="pager-label">下一篇 →</span>
+          <span class="pager-title">AI 时代的“毕业即失业”</span>
+        </a>
+      </nav>
+
+      <div class="article-foot">
+        <a class="back-link" href="../index.html#book-pages">← 回到书页</a>
+        <nav class="article-links" aria-label="在别处">
+          <a href="https://x.com/Yi920224" target="_blank" rel="me noopener">X</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://weibo.com/u/2597761033" target="_blank" rel="me noopener">微博</a>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="https://github.com/ethan-0121/shuye" target="_blank" rel="me noopener">GitHub</a>
+        </nav>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p>© 2026 Ethan</p>
+      <div class="footer-note">
+        <p>人是闲的 · 纸是暖的，字是慢的</p>
+        <p class="footer-mail">写信 · <a href="mailto:ethan19920121@gmail.com">ethan19920121@gmail.com</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/main.js?v=58a1a060" defer></script>
+</body>
+</html>

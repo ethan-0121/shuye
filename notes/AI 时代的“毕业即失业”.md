@@ -6,7 +6,7 @@ summary: AI 时代的“毕业即失业”，不是一场裁员潮，而是一�
 description:
 slug: ai-graduation-unemployment
 cover:
-lead:
+lead: 被挡在门外的人，正在年轻化
 ---
 
 10月16日，Anthropic 发了一份很少见的报告：它拿自己当样本，研究“用了 AI 之后，公司的用人到底变了什么”。

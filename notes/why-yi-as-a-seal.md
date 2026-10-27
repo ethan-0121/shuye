@@ -6,7 +6,7 @@ summary: 为什么是它？我也不太明白，或是看着顺眼？
 description:
 slug: yinzhang
 cover:
-lead:
+lead: 它的存在，证明了我在这里
 ---
 
 网站做好之后，标签页上挂的还是默认图标。

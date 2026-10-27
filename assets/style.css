@@ -12,6 +12,7 @@
   --line: rgba(42, 37, 32, 0.14);
   --line-strong: rgba(42, 37, 32, 0.28);
   --accent: #a34a2e;
+  --seal: #a8412a;
 
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Songti SC", STSong,
     "Noto Serif SC", "Source Han Serif SC", serif;
@@ -290,9 +291,7 @@ img {
   height: clamp(2.3rem, 4.4vw, 3.3rem);
   margin-top: clamp(0.4rem, 1.2vw, 0.85rem);
   border-radius: 3px 6px 3px 5px / 4px 3px 6px 2px;
-  background: var(--accent);
-  color: #f8f1e4;
-  font-size: clamp(1.1rem, 2.2vw, 1.6rem);
+  background: var(--seal) url("seal-glyph.png?v=1") center / auto 88% no-repeat;
   line-height: 1;
   opacity: 0.92;
   transform: rotate(5deg);

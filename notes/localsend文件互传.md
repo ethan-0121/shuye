@@ -1,5 +1,5 @@
 ---
-title: 新文章标题手机和电脑互传文件，还在用微信发给自己？
+title: 手机和电脑互传文件，还在用微信发给自己
 date: 2026-11-04
 category: 实践
 summary: localsend局域网文件互传
